@@ -63,7 +63,7 @@ public class FilesStorageImpl implements FilesStorageService {
                     .filter(path ->  !path.equals(this.root))
                     .map(this.root::relativize);
         } catch (IOException e) {
-            throw new RuntimeException("Could not load files");
+            throw new RuntimeException("Could not load ");
         }
     }
 }
