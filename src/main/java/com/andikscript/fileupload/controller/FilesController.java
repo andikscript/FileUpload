@@ -26,15 +26,9 @@ public class FilesController {
 
     @PostMapping(value = "/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam(value = "file") MultipartFile file) {
-        try {
-            filesStorageService.save(file);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("Uploaded the file successfully : " + file.getOriginalFilename()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
-                    .body(new ResponseMessage("Could not upload file : " + file.getOriginalFilename()
-                    + ", Error : " + e.getMessage()));
-        }
+        filesStorageService.save(file);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("Uploaded the file successfully : " + file.getOriginalFilename()));
     }
 
     @GetMapping(value = "file")
@@ -54,14 +48,9 @@ public class FilesController {
 
     @GetMapping(value = "/file/{filename:.+}")
     public ResponseEntity<?> getFile(@PathVariable(value = "filename") String filename) {
-        try {
-            Resource file = filesStorageService.load(filename);
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("File not found");
-        }
+        Resource file = filesStorageService.load(filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 }
