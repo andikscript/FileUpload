@@ -1,4 +1,4 @@
-# FileUpload
+# FileUpload - Spring Boot
 Simple upload & download file by using spring boot on static folder
 
 ## Featured
