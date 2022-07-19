@@ -16,20 +16,20 @@ public class FileUploadExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ResponseMessage> handleMaxFileSize(MaxUploadSizeExceededException exc) {
         return ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
-                .body(new ResponseMessage("File to large"));
+                .body(new ResponseMessage(exc.getMessage()));
     }
 
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<ResponseMessage> paramsNotFound(MultipartException exc) {
         return ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
-                .body(new ResponseMessage("File not found"));
+                .body(new ResponseMessage(exc.getMessage()));
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ResponseMessage> fileIsEmpty(RuntimeException exc) {
         return ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
-                .body(new ResponseMessage("File is Empty"));
+                .body(new ResponseMessage(exc.getMessage()));
     }
 }
