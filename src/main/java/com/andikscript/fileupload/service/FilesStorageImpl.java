@@ -19,15 +19,6 @@ public class FilesStorageImpl implements FilesStorageService {
     private final Path root = Paths.get("uploads");
 
     @Override
-    public void init() {
-        try {
-            Files.createDirectory(root);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not be initialize folder uploads!");
-        }
-    }
-
-    @Override
     public void save(MultipartFile file) {
         try {
             Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
@@ -49,11 +40,6 @@ public class FilesStorageImpl implements FilesStorageService {
         } catch (MalformedURLException e) {
             throw new RuntimeException(" Error : " + e.getMessage());
         }
-    }
-
-    @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(root.toFile());
     }
 
     @Override
