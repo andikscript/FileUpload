@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RestController
-@RequestMapping(value = "/api/files/")
+@RequestMapping(value = "/api/files")
 public class FilesController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class FilesController {
                 .body(new ResponseMessage("Uploaded the file successfully : " + file.getOriginalFilename()));
     }
 
-    @GetMapping(value = "file")
+    @GetMapping(value = "/file")
     public ResponseEntity<List<FileInfo>> getListFiles() {
         List<FileInfo> filesInfos = filesStorageService.loadAll()
                 .map(path -> {
