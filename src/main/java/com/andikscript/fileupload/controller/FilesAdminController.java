@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,21 @@ public class FilesAdminController {
         filesStorageService.save(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("Uploaded the file successfully : " + file.getOriginalFilename()));
+    }
+
+    @PostMapping(value = "/upload/files")
+    public ResponseEntity<ResponseMessage> uploadMultipleFile(@RequestParam(value = "file") MultipartFile[] file) {
+        filesStorageService.setRoot(PathStore.ADMIN);
+        List<String> fileName = new ArrayList<>();
+        Arrays.asList(file)
+                .stream()
+                .forEach(file1 -> {
+                    filesStorageService.save(file1);
+                    fileName.add(file1.getOriginalFilename());
+                });
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("Uploaded the file successfully : " + fileName));
     }
 
     @GetMapping(value = "/files")
