@@ -19,29 +19,29 @@ import java.util.stream.Collectors;
 
 @Controller
 @RestController
-@RequestMapping(value = "/api/files")
-public class FilesController {
+@RequestMapping(value = "/api/file/user")
+public class FilesUserController {
 
     @Autowired
     private FilesStorageService filesStorageService;
 
     @PostMapping(value = "/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam(value = "file") MultipartFile file) {
-        filesStorageService.setRoot(PathStore.ADMIN);
+        filesStorageService.setRoot(PathStore.USER);
         filesStorageService.save(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("Uploaded the file successfully : " + file.getOriginalFilename()));
     }
 
-    @GetMapping(value = "/file")
+    @GetMapping(value = "/files")
     public ResponseEntity<List<FileInfo>> getListFiles() {
-        filesStorageService.setRoot(PathStore.ADMIN);
+        filesStorageService.setRoot(PathStore.USER);
         List<FileInfo> filesInfos = filesStorageService.loadAll()
                 .map(path -> {
                     return new FileInfo(
                             path.getFileName().toString(),
                             MvcUriComponentsBuilder
-                                    .fromMethodName(FilesController.class, "getFile"
+                                    .fromMethodName(FilesUserController.class, "getFile"
                                     , path.getFileName().toString()).build().toString()
                     );
                 }).collect(Collectors.toList());
@@ -49,9 +49,9 @@ public class FilesController {
         return ResponseEntity.status(HttpStatus.OK).body(filesInfos);
     }
 
-    @GetMapping(value = "/file/{filename:.+}")
+    @GetMapping(value = "/download/{filename:.+}")
     public ResponseEntity<?> getFile(@PathVariable(value = "filename") String filename) {
-        filesStorageService.setRoot(PathStore.ADMIN);
+        filesStorageService.setRoot(PathStore.USER);
         Resource file = filesStorageService.load(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
