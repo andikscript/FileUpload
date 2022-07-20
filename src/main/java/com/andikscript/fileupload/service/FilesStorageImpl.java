@@ -3,7 +3,6 @@ package com.andikscript.fileupload.service;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,7 +15,12 @@ import java.util.stream.Stream;
 @Service
 public class FilesStorageImpl implements FilesStorageService {
 
-    private final Path root = Paths.get("uploads");
+    private Path root = Paths.get("");
+
+    @Override
+    public void setRoot(String path) {
+        this.root = Paths.get(path);
+    }
 
     @Override
     public void save(MultipartFile file) {

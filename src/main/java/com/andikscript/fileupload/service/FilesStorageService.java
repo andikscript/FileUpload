@@ -4,9 +4,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public interface FilesStorageService {
+
+    public void setRoot(String path);
 
     public void save(MultipartFile file);
 
