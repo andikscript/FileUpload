@@ -1,5 +1,6 @@
 package com.andikscript.fileupload.controller;
 
+import com.andikscript.fileupload.enums.PathStore;
 import com.andikscript.fileupload.message.ResponseMessage;
 import com.andikscript.fileupload.model.FileInfo;
 import com.andikscript.fileupload.service.FilesStorageService;
@@ -26,6 +27,7 @@ public class FilesController {
 
     @PostMapping(value = "/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam(value = "file") MultipartFile file) {
+        filesStorageService.setRoot(PathStore.ADMIN);
         filesStorageService.save(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("Uploaded the file successfully : " + file.getOriginalFilename()));
@@ -33,6 +35,7 @@ public class FilesController {
 
     @GetMapping(value = "/file")
     public ResponseEntity<List<FileInfo>> getListFiles() {
+        filesStorageService.setRoot(PathStore.ADMIN);
         List<FileInfo> filesInfos = filesStorageService.loadAll()
                 .map(path -> {
                     return new FileInfo(
@@ -48,6 +51,7 @@ public class FilesController {
 
     @GetMapping(value = "/file/{filename:.+}")
     public ResponseEntity<?> getFile(@PathVariable(value = "filename") String filename) {
+        filesStorageService.setRoot(PathStore.ADMIN);
         Resource file = filesStorageService.load(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
