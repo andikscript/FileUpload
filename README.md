@@ -5,6 +5,7 @@ Simple upload & download file by using spring boot on static folder
 - Spring Boot Web
 - Upload and Download file (User & Admin)
 - Max file size : 5 MB
+- All type file can upload
 
 ## API
 
