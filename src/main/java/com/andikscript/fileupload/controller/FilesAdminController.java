@@ -74,4 +74,13 @@ public class FilesAdminController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
+
+    @GetMapping(value = "/open/{filename:.+}")
+    public ResponseEntity<?> openFile(@PathVariable(value = "filename") String filename) {
+        filesStorageService.setRoot(PathStore.ADMIN);
+        Resource file = filesStorageService.load(filename);
+        System.out.println(file.getFilename());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE,"image/png").body(file);
+    }
 }
